@@ -2,7 +2,9 @@ from .base import *
 from .setting_utils import get_env_value
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "devblock-django-ecommerce.herokuapp.com",
+]
 DEBUG = False
 SECRET_KEY = get_env_value("SECRET_KEY")
 

@@ -16,6 +16,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "rest_framework",
+    "django_use_email_as_username.apps.DjangoUseEmailAsUsernameConfig",
+    "custom_user.apps.CustomUserConfig",
 ]
 
 MIDDLEWARE = [
@@ -138,3 +140,6 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
+
+# Custom User model
+AUTH_USER_MODEL = "custom_user.User"

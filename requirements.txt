@@ -4,6 +4,7 @@ black==21.5b2
 click==8.0.1
 Django==3.2.4
 django-cors-headers==3.7.0
+django-use-email-as-username==1.1.2
 djangorestframework==3.12.4
 djangorestframework-simplejwt==4.7.1
 gunicorn==20.1.0

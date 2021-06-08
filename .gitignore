@@ -50,3 +50,6 @@ db.sqlite3
 .DS_Store
 .DS_STORE
 *.swp
+
+.env/
+staticfiles/

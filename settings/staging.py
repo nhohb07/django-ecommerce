@@ -19,7 +19,7 @@ DATABASES = {
     }
 }
 
-SIMPLE_JWT = BASE_SIMPLE_JWT.update(
+SIMPLE_JWT.update(
     {
         "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
         "REFRESH_TOKEN_LIFETIME": timedelta(days=1),

@@ -1,7 +1,7 @@
 from .base import *
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-DEBUG = True
+DEBUG = False
 SECRET_KEY = "dev@secret#1938"
 
 

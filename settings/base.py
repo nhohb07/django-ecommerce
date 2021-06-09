@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from datetime import timedelta
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,6 +17,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_use_email_as_username.apps.DjangoUseEmailAsUsernameConfig",
     "custom_user.apps.CustomUserConfig",
+    "apps.product",
+    "drf_yasg"
+
 ]
 
 MIDDLEWARE = [
@@ -37,6 +39,7 @@ ROOT_URLCONF = "ecommerce.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        'APP_DIRS': True,
         "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -89,23 +92,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_URL = "/static/"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ],
+}
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': timedelta(seconds=3600),
 }
 
 SIMPLE_JWT = {
@@ -127,7 +136,7 @@ SIMPLE_JWT = {
     "TOKEN_TYPE_CLAIM": "token_type",
     "JTI_CLAIM": "jti",
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=60),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
 

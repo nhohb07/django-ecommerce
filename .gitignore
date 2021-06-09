@@ -51,5 +51,10 @@ db.sqlite3
 .DS_STORE
 *.swp
 
+<<<<<<< Updated upstream
 .env/
 staticfiles/
+=======
+venv/
+false/
+>>>>>>> Stashed changes

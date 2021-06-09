@@ -19,3 +19,4 @@ sqlparse==0.4.1
 toml==0.10.2
 uritemplate==3.0.1
 whitenoise==5.2.0
+python-slugify==5.0.2

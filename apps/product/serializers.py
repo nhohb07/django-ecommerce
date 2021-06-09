@@ -19,7 +19,6 @@ class ProductSerializer(serializers.ModelSerializer):
         model = ProductModel 
 
     def create(self, validated_data):
-        print(validated_data)
         product = ProductModel.objects.create(
             image=validated_data['image'],
             price=validated_data['price'],

@@ -1,8 +1,8 @@
 from django.http.response import JsonResponse
 from .models import CategoryModel, ProductModel
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
 from .serializers import CategorySerializer, ProductSerializer
-
+import django_filters.rest_framework
 # Create your views here.
 
 class ProductView(generics.CreateAPIView):
@@ -11,6 +11,7 @@ class ProductView(generics.CreateAPIView):
     serializer_class = ProductSerializer
 class ListProductView(generics.ListAPIView):
     queryset = ProductModel.objects.all()
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     permission_classes = (permissions.IsAuthenticated, )
     serializer_class = ProductSerializer
 
@@ -22,6 +23,7 @@ class DetailProduct(generics.RetrieveUpdateAPIView):
 class CategoryView(generics.CreateAPIView):
     queryset = CategoryModel.objects.all()
     permission_classes = (permissions.IsAuthenticated, )
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     serializer_class = CategorySerializer
     
 class ListCategoryView(generics.ListAPIView):

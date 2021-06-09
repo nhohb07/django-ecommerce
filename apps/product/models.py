@@ -20,6 +20,5 @@ class ProductModel(models.Model):
     description = TextField(max_length=5000)
     name = TextField(max_length=500)
     category = models.ForeignKey(CategoryModel, blank=True, null=True, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.image.name
+
 

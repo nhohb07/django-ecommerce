@@ -38,32 +38,33 @@ class ListProductView(generics.ListAPIView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        request = self.request
-        order = "date_create_at"
-        kwargs = {
-            'name': request.GET.get('name',None),
-            'content': request.GET.get('content',None),
-            'description': request.GET.get('description',None),
-            'order_by': request.GET.get('order_by',None),
-            'order': request.GET.get('order', 'desc'),
-            'category': request.GET.get('category', None),
-            'min_price': request.GET.get('min_price', None),
-            'max_price': request.GET.get('max_price', None),
-        }
+
+        name, content, description, order_by, order, category,min_price, max_price = [self.request.GET.get(i, None) for i in ('name', 'content', 'description', 'order_by', 'order', 'category','min_price', 'max_price')]
+        if order is None : order =  "desc"
+
         filter_kwargs = {}
-        for key, value in kwargs.items():
-            if value and key != "category" and key != "min_price" and key != "max_price" and key != "order_by" and key != "order":
-                filter_kwargs[key+"__contains"] = value
-            elif key == "category" and value:
-                filter_kwargs[key+"__pk"] = value
-        if kwargs["min_price"] and kwargs["max_price"]:
-                filter_kwargs["price__range"] = (kwargs["min_price"], kwargs["max_price"])
-        if kwargs["order_by"] and kwargs["order_by"]:
-                order =  kwargs["order_by"]
-                if kwargs["order"] == "desc":
-                    order = "-"+ order
-        query = self.queryset.filter(**filter_kwargs).order_by(order)
-        return query
+        order_field = "-date_create_at"
+        plus_order = "-" if order == "desc" else ""
+
+        if name:
+            filter_kwargs["name__contains"] = name
+
+        if content:
+            filter_kwargs["content__contains"] = content
+
+        if description:
+            filter_kwargs["description__contains"] = description
+
+        if category:
+            filter_kwargs["category__pk"] = category
+
+        if min_price and max_price : 
+            filter_kwargs["price__range"] = (min_price,max_price)
+            
+        if order_by : 
+            order_field = plus_order + order_by
+       
+        return self.queryset.filter(**filter_kwargs).order_by(order_field)
 
 class DetailProduct(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -87,31 +88,33 @@ class ListCategoryView(generics.ListAPIView):
     order_by = openapi.Parameter('order_by', openapi.IN_QUERY, description="order_by field", type=openapi.TYPE_STRING)
     order = openapi.Parameter('order', openapi.IN_QUERY, description="order (desc or asc)", type=openapi.TYPE_STRING)
     parameters = [name,description,  order_by, order]
+
     @swagger_auto_schema(operation_description="Get list Catetory",manual_parameters=parameters)
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        request = self.request
-        order = "date_create_at"
-        kwargs = {
-            'name': request.GET.get('name',None),
-            'slug': request.GET.get('slug',None),
-            'description': request.GET.get('description',None),
-            'order_by': request.GET.get('order_by',None),
-            'order': request.GET.get('order', 'desc'),
-        }
-        filter_kwargs = {}
-        for key, value in kwargs.items():
-            if value and  key != "order_by" and key != "order":
-                filter_kwargs[key+"__contains"] = value
+    
+        name, description, order_by, order, slug = [self.request.GET.get(i, None) for i in ('name', 'description', 'order_by', 'order', 'slug')]
+        if order is None : order =  "desc"
 
-        if kwargs["order_by"] and kwargs["order_by"]:
-                order =  kwargs["order_by"]
-                if kwargs["order"] == "desc":
-                    order = "-"+ order
-        query = self.queryset.filter(**filter_kwargs).order_by(order)
-        return query
+        filter_kwargs = {}
+        order_field = "-date_create_at"
+        plus_order = "-" if order == "desc" else ""
+
+        if name:
+            filter_kwargs["name__contains"] = name
+
+        if description:
+            filter_kwargs["description__contains"] = description
+
+        if slug:
+            filter_kwargs["slug__pk"] = slug
+            
+        if order_by : 
+            order_field = plus_order + order_by
+       
+        return self.queryset.filter(**filter_kwargs).order_by(order_field)
 
 class DetailCategory(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)

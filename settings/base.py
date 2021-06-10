@@ -19,7 +19,6 @@ INSTALLED_APPS = [
     "custom_user.apps.CustomUserConfig",
     "apps.product",
     "drf_yasg"
-
 ]
 
 MIDDLEWARE = [
@@ -98,16 +97,23 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+    # 'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-    ],
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
@@ -115,7 +121,7 @@ REST_FRAMEWORK = {
     ],
 }
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': timedelta(seconds=3600),
+    'JWT_EXPIRATION_DELTA': timedelta(seconds=3600)
 }
 
 SIMPLE_JWT = {
@@ -153,3 +159,15 @@ CORS_ALLOW_METHODS = [
 
 # Custom User model
 AUTH_USER_MODEL = "custom_user.User"
+MEDIA_URL =  '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# AWS_ACCESS_KEY_ID = 'key'
+# AWS_SECRET_ACCESS_KEY = 'access_key'
+# AWS_STORAGE_BUCKET_NAME = 'name_bitbucket'
+# AWS_S3_SIGNATURE_VERSION = 's3v4'
+# AWS_S3_REGION_NAME = 'region'
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# AWS_S3_VERIFY = False
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

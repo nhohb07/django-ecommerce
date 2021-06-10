@@ -2,8 +2,9 @@ from rest_framework import serializers
 from slugify import slugify
 from .models import CategoryModel, ProductModel
 
+
 class ProductSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         fields = (
             'id', 'date_create_at', 'date_update_at', 'image', 'price', 'content', 'description', 'name', 'category'
@@ -25,11 +26,13 @@ class ProductSerializer(serializers.ModelSerializer):
             content=validated_data['content'],
             description=validated_data['description'],
             name=validated_data['name'],
+            category=validated_data['category'],
         )
 
         product.save()
 
         return product
+
 
 class CategorySerializer(serializers.ModelSerializer):
     

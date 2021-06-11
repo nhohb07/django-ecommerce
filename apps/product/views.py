@@ -15,11 +15,11 @@ class ProductView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     parser_classes = (MultiPartParser,)
 
-    category = openapi.Parameter('category', openapi.IN_QUERY, description="product of category", type=openapi.TYPE_BOOLEAN)
+    category = openapi.Parameter('category', openapi.IN_QUERY, description="product of category", type=openapi.TYPE_INTEGER)
     name = openapi.Parameter('name', openapi.IN_QUERY, description="search by name", type=openapi.TYPE_STRING)
     description = openapi.Parameter('description', openapi.IN_QUERY, description="search by description", type=openapi.TYPE_STRING)
-    min_price = openapi.Parameter('min_price', openapi.IN_QUERY, description="filter  by min_price", type=openapi.TYPE_INTEGER)
-    max_price = openapi.Parameter('max_price', openapi.IN_QUERY, description="filter  by max_price", type=openapi.TYPE_INTEGER)
+    min_price = openapi.Parameter('min_price', openapi.IN_QUERY, description="filter  by min_price", type=openapi.TYPE_NUMBER)
+    max_price = openapi.Parameter('max_price', openapi.IN_QUERY, description="filter  by max_price", type=openapi.TYPE_NUMBER)
     order_by = openapi.Parameter('order_by', openapi.IN_QUERY, description="order_by field", type=openapi.TYPE_STRING)
     order = openapi.Parameter('order', openapi.IN_QUERY, description="order (desc or asc)", type=openapi.TYPE_STRING)
     parameters = [category,name,description, min_price, max_price, order_by, order]

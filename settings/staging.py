@@ -19,8 +19,7 @@ DATABASES = {
         "PORT": get_env_value("DB_PORT"),
     }
 }
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
+
 
 SIMPLE_JWT.update(
     {

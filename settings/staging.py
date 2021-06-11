@@ -1,6 +1,5 @@
 from .base import *
 from .setting_utils import get_env_value
-import dj_database_url
 
 
 ALLOWED_HOSTS = [

@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 from rest_framework import permissions
 from drf_yasg import openapi
@@ -24,13 +23,11 @@ schema_view = schema_view_api(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("product/", include("apps.product.urls")),
-    path("category/", include("apps.product.urls_cat")),
+    path("", include("apps.product.urls")),
     path("auth/", include("apps.authentication.urls")),
-    path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('rest_framework.urls')),
-    
 ]
+
 
 urlpatterns += [
     path(

@@ -1,6 +1,6 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions
 from rest_framework.decorators import permission_classes
 from rest_framework.parsers import MultiPartParser
 
@@ -9,14 +9,11 @@ from .serializers import CategorySerializer, ProductSerializer
 
 
 @permission_classes((permissions.IsAuthenticated,))
-class ProductView(generics.CreateAPIView):
+class ProductView(generics.ListCreateAPIView):
     queryset = ProductModel.objects.all()
     permission_classes = (permissions.IsAuthenticated, )
     serializer_class = ProductSerializer
     parser_classes = (MultiPartParser,)
-
-
-class ListProductView(generics.ListAPIView):
 
     category = openapi.Parameter('category', openapi.IN_QUERY, description="product of category", type=openapi.TYPE_BOOLEAN)
     name = openapi.Parameter('name', openapi.IN_QUERY, description="search by name", type=openapi.TYPE_STRING)
@@ -27,16 +24,10 @@ class ListProductView(generics.ListAPIView):
     order = openapi.Parameter('order', openapi.IN_QUERY, description="order (desc or asc)", type=openapi.TYPE_STRING)
     parameters = [category,name,description, min_price, max_price, order_by, order]
 
-    queryset = ProductModel.objects.all()
-    # filter_backends = (filters.SearchFilter,)
-    permission_classes = (permissions.IsAuthenticated, )
-    serializer_class = ProductSerializer
-    # search_fields = ['name']
-    
-    @swagger_auto_schema(operation_description="Get list Product",manual_parameters=parameters)
+    @swagger_auto_schema(operation_description="Get list Product",manual_parameters=parameters)    
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-
+    
     def get_queryset(self):
 
         name, content, description, order_by, order, category,min_price, max_price = [self.request.GET.get(i, None) for i in ('name', 'content', 'description', 'order_by', 'order', 'category','min_price', 'max_price')]
@@ -66,22 +57,16 @@ class ListProductView(generics.ListAPIView):
        
         return self.queryset.filter(**filter_kwargs).order_by(order_field)
 
-class DetailProduct(generics.RetrieveUpdateAPIView):
+class DetailProduct(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = ProductModel.objects.all()
     serializer_class = ProductSerializer
 
-class CategoryView(generics.CreateAPIView):
+class CategoryView(generics.ListCreateAPIView):
     queryset = CategoryModel.objects.all()
     permission_classes = (permissions.IsAuthenticated, )
     serializer_class = CategorySerializer
     parser_classes = (MultiPartParser,)
-    
-class ListCategoryView(generics.ListAPIView):
-
-    queryset = CategoryModel.objects.all()
-    permission_classes = (permissions.IsAuthenticated, )
-    serializer_class = CategorySerializer
 
     name = openapi.Parameter('name', openapi.IN_QUERY, description="search by name", type=openapi.TYPE_STRING)
     description = openapi.Parameter('description', openapi.IN_QUERY, description="search by description", type=openapi.TYPE_STRING)
@@ -115,8 +100,9 @@ class ListCategoryView(generics.ListAPIView):
             order_field = plus_order + order_by
        
         return self.queryset.filter(**filter_kwargs).order_by(order_field)
+    
 
-class DetailCategory(generics.RetrieveUpdateAPIView):
+class DetailCategory(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = CategoryModel.objects.all()
     serializer_class = CategorySerializer

@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_use_email_as_username.apps.DjangoUseEmailAsUsernameConfig",
     "custom_user.apps.CustomUserConfig",
+    "apps.product",
 ]
 
 MIDDLEWARE = [
@@ -104,7 +105,8 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+        "rest_framework.permissions.DjangoModelPermissions",
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
     ],
 }
 
